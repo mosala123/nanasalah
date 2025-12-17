@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { FaArrowRight, FaPlay, FaPause, FaSpinner, FaChevronLeft, FaChevronRight, FaBook, FaHeadphones, FaArrowLeft } from 'react-icons/fa';
 
-export default function SurahDetailPage({ params }) {
+export default function SurahDetailPage({ params }: { params: { id: string } }) {
     const surahNumber = params.id;
     const [surah, setSurah] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -200,10 +200,10 @@ export default function SurahDetailPage({ params }) {
                                 {/* Ayah Number */}
                                 <div className="mb-8">
                                     <div className="inline-block bg-gradient-to-r from-amber-600 to-orange-600 text-white px-6 py-3 rounded-full shadow-lg border border-amber-400">
-  <span className="text-2xl font-bold tracking-wide">
-    ﴿ بِسْمِ اللَّهِ الرَّحْمٰنِ الرَّحِيمِ ﴾
-  </span>
-</div>
+                                        <span className="text-2xl font-bold tracking-wide">
+                                            ﴿ بِسْمِ اللَّهِ الرَّحْمٰنِ الرَّحِيمِ ﴾
+                                        </span>
+                                    </div>
 
                                 </div>
 
@@ -218,15 +218,15 @@ export default function SurahDetailPage({ params }) {
                                 </div>
 
                                 {/* End of Ayah Symbol */}
-                               <div className="mt-6 flex items-center justify-center">
-  <div className="bg-gradient-to-br from-amber-600 to-orange-600 text-white 
+                                <div className="mt-6 flex items-center justify-center">
+                                    <div className="bg-gradient-to-br from-amber-600 to-orange-600 text-white 
                   w-16 h-16 rounded-full flex items-center justify-center 
                   shadow-lg border border-amber-400">
-    <span className="text-2xl font-bold">
-      ﴿ {surah.ayahs[currentPage]?.numberInSurah} ﴾
-    </span>
-  </div>
-</div>
+                                        <span className="text-2xl font-bold">
+                                            ﴿ {surah.ayahs[currentPage]?.numberInSurah} ﴾
+                                        </span>
+                                    </div>
+                                </div>
 
 
                                 {/* Page Info */}
