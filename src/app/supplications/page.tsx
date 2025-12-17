@@ -4,14 +4,14 @@ import HeroBanner from '@/components/HeroBanner';
 import Link from 'next/link';
 
 // Components
-const SectionHeader = ({ title, subtitle }) => (
+const SectionHeader = ({ title, subtitle }: { title: string; subtitle?: string }) => (
   <div className="text-center mb-12">
     <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-3">{title}</h2>
     {subtitle && <p className="text-gray-600 text-lg">{subtitle}</p>}
   </div>
 );
 
-const Card = ({ children, className = "", style = {} }) => (
+const Card = ({ children, className = "", style = {} }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) => (
   <div className={`bg-white rounded-2xl shadow-md ${className}`} style={style}>
     {children}
   </div>
