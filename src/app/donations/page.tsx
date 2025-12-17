@@ -59,7 +59,7 @@ export default function DonationsPage() {
     });
     const [submitted, setSubmitted] = useState(false);
 
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
             ...prev,
@@ -67,7 +67,7 @@ export default function DonationsPage() {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setSubmitted(true);
         setFormData({ name: '', amount: '', message: '' });

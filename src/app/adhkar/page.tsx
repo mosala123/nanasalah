@@ -219,16 +219,16 @@ const adhkarData = {
 };
 
 export default function AdhkarPage() {
-    const [activeCategory, setActiveCategory] = useState('morning');
+    const [activeCategory, setActiveCategory] = useState<'morning' | 'evening' | 'sleep' | 'general'>('morning');
     const [searchTerm, setSearchTerm] = useState('');
 
-    const filteredAdhkar = adhkarData[activeCategory].filter(
+    const filteredAdhkar = adhkarData[activeCategory as keyof typeof adhkarData].filter(
         (dhikr) =>
             dhikr.translation.toLowerCase().includes(searchTerm.toLowerCase()) ||
             dhikr.arabic.includes(searchTerm)
     );
 
-    const categories = [
+    const categories: { id: 'morning' | 'evening' | 'sleep' | 'general'; label: string }[] = [
         { id: 'morning', label: 'أذكار الصباح' },
         { id: 'evening', label: 'أذكار المساء' },
         { id: 'sleep', label: 'أذكار النوم' },
@@ -293,19 +293,19 @@ export default function AdhkarPage() {
                                     <p className="text-2xl font-bold text-amber-900 text-right leading-loose">
                                         {dhikr.arabic}
                                     </p>
-                                    
+
                                     {/* Translation */}
                                     <p className="text-gray-700 text-lg leading-relaxed italic border-r-2 border-amber-300 pr-3">
                                         "{dhikr.translation}"
                                     </p>
-                                    
+
                                     {/* Repetition Count */}
                                     <div className="bg-amber-50 p-3 rounded-lg border border-amber-200">
                                         <p className="text-amber-800 font-bold">
                                             <span className="text-amber-600">عدد المرات:</span> {dhikr.times}
                                         </p>
                                     </div>
-                                    
+
                                     {/* Benefits */}
                                     {dhikr.benefits && (
                                         <div className="bg-green-50 p-3 rounded-lg border border-green-200">
@@ -314,7 +314,7 @@ export default function AdhkarPage() {
                                             </p>
                                         </div>
                                     )}
-                                    
+
                                     {/* Decorative Element */}
                                     <div className="flex justify-end">
                                         <span className="text-amber-700 text-sm font-semibold bg-amber-100 px-3 py-1 rounded-full">
@@ -348,18 +348,18 @@ export default function AdhkarPage() {
                     />
                     <div className="grid md:grid-cols-2 gap-6">
                         {[
-                            { 
-                                title: 'راحة النفس', 
+                            {
+                                title: 'راحة النفس',
                                 description: 'تجلب السكينة والطمأنينة للقلب وتزيل الهم والغم',
                                 icon: '🧘'
                             },
-                            { 
-                                title: 'النمو الروحي', 
+                            {
+                                title: 'النمو الروحي',
                                 description: 'تقوي الصلة بالله تعالى وترفع الدرجات في الجنة',
                                 icon: '🕌'
                             },
-                            { 
-                                title: 'حفظ الإنسان', 
+                            {
+                                title: 'حفظ الإنسان',
                                 description: 'تحفظ الإنسان من الشيطان وتقيه من الشرور والأذى',
                                 icon: '🛡️'
                             },
