@@ -13,7 +13,7 @@ export default function SurahDetailPage({ params }: { params: { id: string } }) 
     const [viewMode, setViewMode] = useState('read');
     const [audioQueue, setAudioQueue] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
-    const audioRef = useRef(null);
+    const audioRef = useRef<HTMLAudioElement>(null);
 
     useEffect(() => {
         const fetchSurah = async () => {
