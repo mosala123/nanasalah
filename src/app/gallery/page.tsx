@@ -7,7 +7,7 @@ import HeroBanner from '../../components/HeroBanner';
 import { FaTimes } from 'react-icons/fa';
 
 export default function GalleryPage() {
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState<{ id: number; category: string; title: string } | null>(null);
 
   const galleryItems = [
     { id: 1, category: 'memories', title: 'لحظة غالية 1' },
@@ -100,7 +100,7 @@ export default function GalleryPage() {
         </div>
       )}
 
-     
+
     </main>
   );
 }
