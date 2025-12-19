@@ -7,7 +7,7 @@ import Card from '../../components/Card';
 import HeroBanner from '../../components/HeroBanner';
 
 export default function QuranPage() {
-  const [surahs, setSurahs] = useState([]);
+  const [surahs, setSurahs] = useState<Array<{ name: string; englishName: string; number: number }>>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(true);
 
