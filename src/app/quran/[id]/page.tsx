@@ -4,14 +4,29 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { FaArrowRight, FaPlay, FaPause, FaSpinner, FaChevronLeft, FaChevronRight, FaBook, FaHeadphones, FaArrowLeft } from 'react-icons/fa';
 
+interface Ayah {
+    text: string;
+    numberInSurah: number;
+    audio: string;
+}
+
+interface Surah {
+    number: number;
+    name: string;
+    englishName: string;
+    numberOfAyahs: number;
+    revelationType: string;
+    ayahs: Ayah[];
+}
+
 export default function SurahDetailPage({ params }: { params: { id: string } }) {
     const surahNumber = params.id;
-    const [surah, setSurah] = useState(null);
+    const [surah, setSurah] = useState<Surah | null>(null);
     const [loading, setLoading] = useState(true);
     const [isPlaying, setIsPlaying] = useState(false);
     const [currentAudioIndex, setCurrentAudioIndex] = useState(0);
     const [viewMode, setViewMode] = useState('read');
-    const [audioQueue, setAudioQueue] = useState([]);
+    const [audioQueue, setAudioQueue] = useState<string[]>([]);
     const [currentPage, setCurrentPage] = useState(0);
     const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -50,7 +65,7 @@ export default function SurahDetailPage({ params }: { params: { id: string } }) 
             const recitationData = await recitationResponse.json();
 
             if (recitationData.data.ayahs) {
-                const urls = recitationData.data.ayahs.map(ayah => ayah.audio);
+                const urls = recitationData.data.ayahs.map((ayah: { audio: string }) => ayah.audio);
                 setAudioQueue(urls);
                 return urls;
             }
@@ -60,7 +75,7 @@ export default function SurahDetailPage({ params }: { params: { id: string } }) 
         return [];
     };
 
-    const playNextAudio = (urls, index) => {
+    const playNextAudio = (urls: string[], index: number) => {
         if (index >= urls.length) {
             setIsPlaying(false);
             setCurrentAudioIndex(0);
