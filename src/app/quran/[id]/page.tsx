@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, use } from 'react';
 import Link from 'next/link';
 import { FaArrowRight, FaPlay, FaPause, FaSpinner, FaChevronLeft, FaChevronRight, FaBook, FaHeadphones, FaArrowLeft } from 'react-icons/fa';
 
@@ -19,8 +19,11 @@ interface Surah {
     ayahs: Ayah[];
 }
 
-export default function SurahDetailPage({ params }: { params: { id: string } }) {
-    const surahNumber = params.id;
+export default function SurahDetailPage({ params }: { params: Promise<{ id: string }> }) {
+    // استخدم React.use() لفك Promise
+    const resolvedParams = use(params);
+    const surahNumber = resolvedParams.id;
+    
     const [surah, setSurah] = useState<Surah | null>(null);
     const [loading, setLoading] = useState(true);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -216,7 +219,7 @@ export default function SurahDetailPage({ params }: { params: { id: string } }) 
                                 <div className="mb-8">
                                     <div className="inline-block bg-gradient-to-r from-amber-600 to-orange-600 text-white px-6 py-3 rounded-full shadow-lg border border-amber-400">
                                         <span className="text-2xl font-bold tracking-wide">
-                                            ﴿ بِسْمِ اللَّهِ الرَّحْمٰنِ الرَّحِيمِ ﴾
+                                            ﴿ بِسْمِ اللَّهِ الرَّحْمٰنِ الرَّحِيمِ ﴾
                                         </span>
                                     </div>
 

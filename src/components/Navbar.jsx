@@ -17,7 +17,6 @@ export default function Navbar() {
         setIsOpen(false);
     };
 
-    // إغلاق القائمة عند النقر خارجها
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -35,10 +34,11 @@ export default function Navbar() {
         { href: '/', label: 'الرئيسية' },
         { href: '/quran', label: 'القرآن الكريم' },
         { href: '/adhkar', label: 'الأذكار والدعاء' },
-        { href: '/dailyReminder', label: 'التذكيرات اليومية' },
-        { href: '/about', label: 'عنها  ' },
+        { href: '/supplications', label: 'أدعية ' },
         { href: '/rewards', label: 'المكافآت' },
-        { href: '/contributors', label: 'المساهمون' },
+        { href: '/sadaka', label: 'الصدقه   ' },
+        { href: '/about', label: 'عنها  ' },
+        { href: '/dailyReminder', label: 'التذكيرات اليومية' },
         { href: '/contact', label: 'اتصل بنا' },
     ];
 

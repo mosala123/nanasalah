@@ -267,7 +267,7 @@ export default function AboutPage() {
                     "في ذكراها نجد العزاء وفي إرثها نجد الأمل"
                   </h3>
                   <p className="text-lg opacity-90">
-                    ستظل حنين حية في قلوبنا وذكرياتنا
+                    ستظل nana  حية في قلوبنا وذكرياتنا
                   </p>
                 </div>
               </div>

@@ -15,15 +15,14 @@ export default function Footer() {
         { label: 'اتصل بنا', href: '/contact' },
         { label: 'التبرعات', href: '/donations' },
         { label: 'المكافآت', href: '/rewards' },
-        { label: 'المساهمون', href: '/contributors' },
         { label: 'الأذكار', href: '/adhkar' },
     ];
 
     const socialLinks = [
         { icon: FaFacebook, label: 'Facebook', url: '#' },
         { icon: FaTwitter, label: 'Twitter', url: '#' },
-        { icon: FaInstagram, label: 'Instagram', url: '#' },
-        { icon: FaEnvelope, label: 'Email', url: '#' },
+        { icon: FaInstagram, label: 'Instagram', url: '/stagram.com/mo_salah_10_74/' },
+        { icon: FaEnvelope, label: 'Email', url: 'elmosalah74@gmail.com' },
     ];
 
     return (
@@ -97,14 +96,14 @@ export default function Footer() {
                         <div className="space-y-4 mb-6">
                             <div>
                                 <p className="text-gray-500 text-sm">البريد الإلكتروني:</p>
-                                <a href="mailto:info@sadaqajariya.com" className="text-amber-400 hover:text-amber-300 transition-colors">
-                                    info@sadaqajariya.com
+                                <a href="elmosalah74@gmail.com" className="text-amber-400 hover:text-amber-300 transition-colors">
+                                    elmosalah74@gmail.com"
                                 </a>
                             </div>
                             <div>
                                 <p className="text-gray-500 text-sm">الهاتف:</p>
-                                <a href="tel:+201001234567" className="text-amber-400 hover:text-amber-300 transition-colors">
-                                    +20 100 1234 567
+                                <a href="tel:+01024668770" className="text-amber-400 hover:text-amber-300 transition-colors">
+                                    +201024668770
                                 </a>
                             </div>
                         </div>

@@ -126,7 +126,7 @@ export default function Home() {
 
   const stats = [
     { icon: '📅', label: 'يوم الرحيل', value: '29/10/2021', unit: '' },
-    { icon: '⏳', label: 'أيام منذ الرحيل', value: daysSincePassing, unit: 'يوم' },
+    { icon: '⏳', label: 'أيام منذ الرحيل', value: daysSincePassing, unit: ' ' },
     { icon: '🎂', label: 'عيد الميلاد', value: '17 يناير', unit: '' },
   ];
 

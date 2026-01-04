@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { FaUser, FaEnvelope, FaLock, FaPhone, FaArrowLeft, FaCheckCircle } from 'react-icons/fa';
 import HeroBanner from '../../../components/HeroBanner';
 import Card from '../../../components/Card';
+import { supabase } from '../../../lib/supabaseClient';
 
 export default function SignupPage() {
   const [formData, setFormData] = useState({
@@ -16,6 +17,8 @@ export default function SignupPage() {
   });
   const [submitted, setSubmitted] = useState(false);
   const [agreed, setAgreed] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -23,25 +26,52 @@ export default function SignupPage() {
       ...prev,
       [name]: value,
     }));
+    // مسح الرسائل الخطأ عند تعديل الحقول
+    if (error) setError(null);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      alert('كلمات المرور غير متطابقة!');
-      return;
+    setError(null);
+    setLoading(true);
+
+    try {
+      if (formData.password !== formData.confirmPassword) {
+        throw new Error('كلمات المرور غير متطابقة!');
+      }
+
+      if (!agreed) {
+        throw new Error('يجب الموافقة على الشروط والأحكام');
+      }
+
+      const { data, error: supabaseError } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          data: {
+            name: formData.name,
+            phone: formData.phone,
+          },
+        },
+      });
+
+      if (supabaseError) throw supabaseError;
+
+      setSubmitted(true);
+      setFormData({ name: '', email: '', phone: '', password: '', confirmPassword: '' });
+      setAgreed(false);
+
+      setTimeout(() => setSubmitted(false), 4000);
+
+    } catch (err: any) {
+      setError(err.message || 'حدث خطأ أثناء إنشاء الحساب');
+    } finally {
+      setLoading(false);
     }
-    if (!agreed) {
-      alert('يجب الموافقة على الشروط والأحكام');
-      return;
-    }
-    setSubmitted(true);
-    setFormData({ name: '', email: '', phone: '', password: '', confirmPassword: '' });
-    setTimeout(() => setSubmitted(false), 4000);
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50">
+    <main className="min-h-screen bg-gradient-to-br from-green-580 to-emerald-50">
       {/* Hero Banner */}
       <section className="px-4 md:px-6 py-8">
         <div className="max-w-7xl mx-auto">
@@ -58,9 +88,9 @@ export default function SignupPage() {
           <Card className="p-8 animate-scale-zoom-in shadow-2xl">
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Name Field */}
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2 text-right">
-                  <FaUser className="inline mr-2" />
+              <div   >
+                <label className="block text-gray-700 font-semibold mb-2 text-right " style={{display:"flex",alignItems:"center"}} >
+                  <FaUser className="inline mr-2 ml-2   "  />
                   الاسم الكامل
                 </label>
                 <input
@@ -69,15 +99,16 @@ export default function SignupPage() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 rounded-lg border-2 border-green-200 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 text-right placeholder-gray-400"
+                  disabled={loading}
+                  className="w-full px-4 py-3 rounded-lg border-2 border-green-200 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 text-right placeholder-gray-400 disabled:opacity-50"
                   placeholder="أدخل اسمك الكامل"
                 />
               </div>
 
               {/* Email Field */}
               <div>
-                <label className="block text-gray-700 font-semibold mb-2 text-right">
-                  <FaEnvelope className="inline mr-2" />
+                <label className="block text-gray-700 font-semibold mb-2 text-right"  style={{display:"flex",alignItems:"center"}}>
+                  <FaEnvelope className="inline mr-2  ml-2 " />
                   البريد الإلكتروني
                 </label>
                 <input
@@ -86,15 +117,16 @@ export default function SignupPage() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 rounded-lg border-2 border-green-200 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 text-right placeholder-gray-400"
+                  disabled={loading}
+                  className="w-full px-4 py-3 rounded-lg border-2 border-green-200 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 text-right placeholder-gray-400 disabled:opacity-50"
                   placeholder="example@email.com"
                 />
               </div>
 
               {/* Phone Field */}
               <div>
-                <label className="block text-gray-700 font-semibold mb-2 text-right">
-                  <FaPhone className="inline mr-2" />
+                <label className="block text-gray-700 font-semibold mb-2 text-right"  style={{display:"flex",alignItems:"center"}}>
+                  <FaPhone className="inline mr-2  ml-2 " />
                   رقم الهاتف
                 </label>
                 <input
@@ -103,15 +135,16 @@ export default function SignupPage() {
                   value={formData.phone}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 rounded-lg border-2 border-green-200 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 text-right placeholder-gray-400"
-                  placeholder="+20 123456789"
+                  disabled={loading}
+                  className="w-full px-4 py-3 rounded-lg border-2 border-green-200 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 text-right placeholder-gray-400 disabled:opacity-50"
+                  placeholder="phone"
                 />
               </div>
 
               {/* Password Field */}
               <div>
-                <label className="block text-gray-700 font-semibold mb-2 text-right">
-                  <FaLock className="inline mr-2" />
+                <label className="block text-gray-700 font-semibold mb-2 text-right"  style={{display:"flex",alignItems:"center"}}>
+                  <FaLock className="inline mr-2  ml-2  " />
                   كلمة المرور
                 </label>
                 <input
@@ -120,15 +153,17 @@ export default function SignupPage() {
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 rounded-lg border-2 border-green-200 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 text-right placeholder-gray-400"
-                  placeholder="••••••••"
+                  disabled={loading}
+                  minLength={6}
+                  className="w-full px-4 py-3 rounded-lg border-2 border-green-200 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 text-right placeholder-gray-400 disabled:opacity-50"
+                  placeholder="أدخل كلمة المرور"
                 />
               </div>
 
               {/* Confirm Password Field */}
               <div>
-                <label className="block text-gray-700 font-semibold mb-2 text-right">
-                  <FaLock className="inline mr-2" />
+                <label className="block text-gray-700 font-semibold mb-2 text-right" style={{display:"flex",alignItems:"center"}}>
+                  <FaLock className="inline mr-2  ml-2 " />
                   تأكيد كلمة المرور
                 </label>
                 <input
@@ -137,8 +172,10 @@ export default function SignupPage() {
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 rounded-lg border-2 border-green-200 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 text-right placeholder-gray-400"
-                  placeholder="••••••••"
+                  disabled={loading}
+                  minLength={6}
+                  className="w-full px-4 py-3 rounded-lg border-2 border-green-200 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 text-right placeholder-gray-400 disabled:opacity-50"
+                  placeholder="أعد إدخال كلمة المرور"
                 />
               </div>
 
@@ -148,6 +185,7 @@ export default function SignupPage() {
                   type="checkbox"
                   checked={agreed}
                   onChange={(e) => setAgreed(e.target.checked)}
+                  disabled={loading}
                   className="w-4 h-4"
                 />
                 <span className="text-sm text-gray-600 text-right flex-1">
@@ -158,22 +196,33 @@ export default function SignupPage() {
                 </span>
               </label>
 
-              {/* Submit Button */}
-              <button
-                type="submit"
-                className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 rounded-lg font-bold hover:shadow-lg transition-all duration-300 hover:scale-105"
-              >
-                إنشاء الحساب
-              </button>
+              {/* Error Message */}
+              {error && (
+                <div className="p-4 bg-red-100 border-l-4 border-red-600 rounded animate-fade-in text-right">
+                  <div className="flex items-center gap-2 justify-end">
+                    <span className="text-red-700">{error}</span>
+                  </div>
+                </div>
+              )}
 
+              {/* Success Message */}
               {submitted && (
                 <div className="p-4 bg-green-100 border-l-4 border-green-600 rounded animate-fade-in text-right">
                   <div className="flex items-center gap-2 justify-end">
-                    <span>تم إنشاء الحساب بنجاح!</span>
+                    <span>تم إنشاء الحساب بنجاح! تحقق من بريدك الإلكتروني للتأكيد.</span>
                     <FaCheckCircle className="text-green-700" />
                   </div>
                 </div>
               )}
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white py-3 rounded-lg font-bold hover:shadow-lg transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+              >
+                {loading ? 'جاري إنشاء الحساب...' : 'إنشاء الحساب'}
+              </button>
             </form>
 
             {/* Login Link */}
