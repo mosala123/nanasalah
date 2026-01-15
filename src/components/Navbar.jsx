@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 import { FaBars, FaTimes, FaUser, FaSignInAlt } from 'react-icons/fa';
+import { CgProfile } from "react-icons/cg";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
@@ -39,7 +40,8 @@ export default function Navbar() {
         { href: '/sadaka', label: 'الصدقه   ' },
         { href: '/about', label: 'عنها  ' },
         { href: '/dailyReminder', label: 'التذكيرات اليومية' },
-        { href: '/contact', label: 'اتصل بنا' },
+        { href: '/messages', label: ' الرسايل ' },
+        
     ];
 
     return (
@@ -75,10 +77,10 @@ export default function Navbar() {
                     <div className="hidden md:flex gap-3 items-center">
                         <Link
                             href="/login"
-                            className="flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-blue-600 transition-colors duration-300 font-semibold hover:bg-blue-50 rounded-lg"
+                            className="flex items-center gap-2 px-4 py-2 text-blue-600 hover:text-green-600 transition-colors duration-300 font-semibold hover:bg-blue-50 rounded-lg"
                         >
-                            <FaSignInAlt />
-                            دخول
+                            <CgProfile size={30} />
+                           
                         </Link>
                         <Link
                             href="/signup"
@@ -123,10 +125,9 @@ export default function Navbar() {
                                 <Link
                                     href="/login"
                                     onClick={closeMenu}
-                                    className="flex items-center justify-end gap-2 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors duration-200 font-semibold"
+                                    className="flex items-center justify-end gap-2 px-4 py-3 text-blue-600   hover:text-green-600 rounded-lg transition-colors duration-200 font-semibold"
                                 >
-                                    <span>دخول</span>
-                                    <FaSignInAlt />
+                                     <CgProfile size={30} />
                                 </Link>
                                 <Link
                                     href="/signup"

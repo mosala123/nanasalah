@@ -207,9 +207,9 @@ export default function SignupPage() {
                       required
                       disabled={loading}
                       className="w-full px-4 py-3 rounded-lg border-2 border-green-200 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-300 text-right placeholder-gray-400 disabled:opacity-50"
-                      placeholder="05XXXXXXXX"
-                      pattern="[0-9]{10}"
-                      title="أدخل 10 أرقام فقط"
+                      placeholder="xxXXXXXXXXx"
+                      pattern="[0-9]{11}"
+                      title="أدخل 11 أرقام فقط"
                     />
                   </div>
 
