@@ -16,6 +16,9 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [redirectCountdown, setRedirectCountdown] = useState(3);
+  const [showResendButton, setShowResendButton] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false);
+  const [resendSuccess, setResendSuccess] = useState(false);
   
   const router = useRouter();
 
@@ -30,6 +33,15 @@ export default function LoginPage() {
     
     checkSession();
   }, [router]);
+
+  // استرجاع البريد الإلكتروني المحفوظ
+  useEffect(() => {
+    const savedEmail = localStorage.getItem('rememberEmail');
+    if (savedEmail) {
+      setEmail(savedEmail);
+      setRememberMe(true);
+    }
+  }, []);
 
   // العد التنازلي لإعادة التوجيه بعد تسجيل الدخول الناجح
   useEffect(() => {
@@ -73,25 +85,33 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const { data, error: supabaseError } = await supabase.auth.signInWithPassword({  
+      // استخدام signInWithPassword بدلاً من signIn
+      const { data, error: supabaseError } = await supabase.auth.signInWithPassword({
         email: email.trim(),
         password: password,
       });
 
       if (supabaseError) {
-        // تحسين رسائل الخطأ
-        switch (supabaseError.message) {
-          case 'Invalid login credentials':
-            throw new Error('البريد الإلكتروني أو كلمة المرور غير صحيحة');
-          case 'Email not confirmed':
-            throw new Error('الرجاء تأكيد بريدك الإلكتروني أولاً');
-          default:
-            throw new Error(supabaseError.message || 'حدث خطأ أثناء تسجيل الدخول');
+        console.error('Supabase Error:', supabaseError);
+        
+        // تحسين رسائل الخطأ مع رابط إعادة إرسال التأكيد
+        if (supabaseError.message.includes('Email not confirmed')) {
+          setError('يجب تأكيد بريدك الإلكتروني أولاً');
+          setShowResendButton(true);
+          setLoading(false);
+          return;
+        } else if (supabaseError.message.includes('Invalid login credentials')) {
+          throw new Error('البريد الإلكتروني أو كلمة المرور غير صحيحة');
+        } else if (supabaseError.message.includes('User not found')) {
+          throw new Error('هذا الحساب غير موجود. يرجى التسجيل أولاً.');
+        } else {
+          throw new Error('حدث خطأ أثناء تسجيل الدخول. حاول مرة أخرى.');
         }
       }
 
       // إذا تم تسجيل الدخول بنجاح
-      if (data?.user) {
+      if (data?.user && data?.session) {
+        console.log('Login successful:', data.user);
         setSubmitted(true);
         
         // حفظ تفضيل "تذكرني" إذا كان مفعلاً
@@ -104,24 +124,18 @@ export default function LoginPage() {
         // تفريغ الحقول بعد النجاح
         setEmail('');
         setPassword('');
+      } else {
+        throw new Error('فشل تسجيل الدخول. حاول مرة أخرى.');
       }
 
     } catch (err: any) {
+      console.error('Login error:', err);
       setError(err.message || 'حدث خطأ أثناء تسجيل الدخول');
       setSubmitted(false);
     } finally {
       setLoading(false);
     }
   };
-
-  // استرجاع البريد الإلكتروني المحفوظ
-  useEffect(() => {
-    const savedEmail = localStorage.getItem('rememberEmail');
-    if (savedEmail) {
-      setEmail(savedEmail);
-      setRememberMe(true);
-    }
-  }, []);
 
   // الزر للذهاب الفوري للبروفايل
   const handleImmediateRedirect = () => {
@@ -183,6 +197,7 @@ export default function LoginPage() {
                       }}
                       required
                       disabled={loading}
+                      minLength={6}
                       className="w-full px-4 py-3 rounded-lg border-2 border-blue-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-300 text-right placeholder-gray-400 disabled:opacity-50"
                       placeholder="أدخل كلمة المرور"
                     />

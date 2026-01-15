@@ -76,7 +76,7 @@ export default function Navbar() {
                     {/* Auth Links - Desktop */}
                     <div className="hidden md:flex gap-3 items-center">
                         <Link
-                            href="/login"
+                            href="/profile"
                             className="flex items-center gap-2 px-4 py-2 text-blue-600 hover:text-green-600 transition-colors duration-300 font-semibold hover:bg-blue-50 rounded-lg"
                         >
                             <CgProfile size={30} />
@@ -123,7 +123,7 @@ export default function Navbar() {
 
                             <div className="border-t pt-4 mt-4 space-y-3">
                                 <Link
-                                    href="/login"
+                                    href="/profile"
                                     onClick={closeMenu}
                                     className="flex items-center justify-end gap-2 px-4 py-3 text-blue-600   hover:text-green-600 rounded-lg transition-colors duration-200 font-semibold"
                                 >
