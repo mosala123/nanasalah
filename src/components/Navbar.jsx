@@ -101,11 +101,10 @@ export default function Navbar() {
                     {/* Mobile Menu */}
                     <div
                         ref={menuRef}
-                        className={`md:hidden fixed top-20 right-0 left-0 bg-white shadow-lg transform transition-all duration-300 ease-in-out ${
-                            isOpen 
-                                ? 'opacity-100 translate-y-0 visible' 
-                                : 'opacity-0 -translate-y-4 invisible'
-                        }`}
+                        className={`md:hidden fixed top-20 right-0 left-0 bg-white shadow-lg transform transition-all duration-300 ease-in-out ${isOpen
+                            ? 'opacity-100 translate-y-0 visible'
+                            : 'opacity-0 -translate-y-4 invisible'
+                            }`}
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className="p-4 space-y-2 max-h-[70vh] overflow-y-auto">
@@ -119,7 +118,7 @@ export default function Navbar() {
                                     {link.label}
                                 </Link>
                             ))}
-                            
+
                             <div className="border-t pt-4 mt-4 space-y-3">
                                 <Link
                                     href="/login"
