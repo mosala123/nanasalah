@@ -41,6 +41,7 @@ export default function Navbar() {
         { href: '/about', label: 'عنها  ' },
         { href: '/dailyReminder', label: 'التذكيرات اليومية' },
         { href: '/messages', label: ' الرسايل ' },
+        { href: '/contact ', label: ' التواصل  ' },
         
     ];
 
